@@ -6,29 +6,13 @@
 /*   By: aaizza <aaizza@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 02:43:19 by aaizza            #+#    #+#             */
-/*   Updated: 2021/11/19 22:41:04 by aaizza           ###   ########.fr       */
+/*   Updated: 2021/11/19 23:08:20 by aaizza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"get_next_line.h"
 
-int	ft_checkline(char *s)
-{
-	int	i;
-
-	i = 0;
-	if (!s)
-		return (0);
-	while (s[i])
-	{
-		if (s[i] == '\n')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-char	*get_line(char *str)
+char	*ft_getline(char *str)
 {
 	int		i;
 	char	*line;
@@ -51,7 +35,7 @@ char	*get_line(char *str)
 	return (line);
 }
 
-char	*get_remain(char *str)
+char	*ft_getremain(char *str)
 {
 	int		i;
 	char	*remain;
@@ -73,7 +57,7 @@ char	*get_remain(char *str)
 	return (remain);
 }
 
-char	*ft_getline(int fd, char *remain)
+char	*ft_get(int fd, char *save)
 {
 	char	*buff;
 	int		size;
@@ -82,7 +66,7 @@ char	*ft_getline(int fd, char *remain)
 	if (!buff)
 		return (NULL);
 	size = 1;
-	while (!ft_checkline(remain) && size != 0)
+	while (!ft_ckeckline(save) && size != 0)
 	{
 		size = read(fd, buff, BUFFER_SIZE);
 		if (size == -1)
@@ -91,23 +75,36 @@ char	*ft_getline(int fd, char *remain)
 			return (NULL);
 		}
 		buff[size] = '\0';
-		remain = ft_strjoin(remain, buff);
+		save = ft_strjoin(save, buff);
 	}
 	free(buff);
-	return (remain);
+	return (save);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*str;
-	static char	*remain;
+	char		*line;
+	static char	*arr[1024];
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	remain = ft_getline(fd, remain);
-	if (!remain)
+	arr[fd] = ft_get(fd, arr[fd]);
+	if (!arr[fd])
 		return (NULL);
-	str = get_line(remain);
-	remain = get_remain(remain);
-	return (str);
+	line = ft_getline(arr[fd]);
+	arr[fd] = ft_getremain(arr[fd]);
+	return (line);
+}
+
+#include <fcntl.h>
+#include <stdio.h>
+
+int main()
+{
+    int fd1 = open("txxt.txt", 2);
+    int fd2 = open("txt.txt", 2);
+    printf("%s", get_next_line(fd1));
+    printf("%s", get_next_line(fd2));
+    printf("%s", get_next_line(fd1));
+    printf("%s", get_next_line(fd2));
 }

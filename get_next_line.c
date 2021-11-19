@@ -6,7 +6,7 @@
 /*   By: aaizza <aaizza@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 02:43:19 by aaizza            #+#    #+#             */
-/*   Updated: 2021/11/19 23:08:20 by aaizza           ###   ########.fr       */
+/*   Updated: 2021/11/20 00:21:57 by aaizza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,7 @@ char	*ft_getline(char *str)
 	line = malloc((i + 2) * sizeof(char));
 	if (!line)
 		return (NULL);
-	ft_strlcpy(line, str, i + 1);
-	if (str[i] == '\n')
-	{
-		line[i] = str[i];
-		i++;
-	}
-	line[i] = '\0';
+	ft_strlcpy(line, str, i + 2);
 	return (line);
 }
 
@@ -103,8 +97,16 @@ int main()
 {
     int fd1 = open("txxt.txt", 2);
     int fd2 = open("txt.txt", 2);
-    printf("%s", get_next_line(fd1));
-    printf("%s", get_next_line(fd2));
-    printf("%s", get_next_line(fd1));
-    printf("%s", get_next_line(fd2));
+	int i = 0;
+	char *a = get_next_line(fd1);
+	while (a[i])
+	{
+		printf("%c", a[i]);
+		i++;
+	}
+	printf("%c", a[i]);
+//     printf("%s", get_next_line(fd1));
+//     printf("%s", get_next_line(fd2));
+//     printf("%s", get_next_line(fd1));
+//     printf("%s", get_next_line(fd2));
 }

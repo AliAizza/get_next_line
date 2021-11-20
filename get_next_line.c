@@ -6,99 +6,92 @@
 /*   By: aaizza <aaizza@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 02:43:19 by aaizza            #+#    #+#             */
-/*   Updated: 2021/11/20 15:20:50 by aaizza           ###   ########.fr       */
+/*   Updated: 2021/11/20 23:53:44 by aaizza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"get_next_line.h"
 
-char	*ft_getline(char *str)
+char *ft_till_line(char *s)
 {
-	int		i;
-	char	*line;
+    int i;
 
+    if (!s ||!s[0])
+		return (NULL);
 	i = 0;
-	if (!str[i])
-		return (NULL);
-	while (str[i] && str[i] != '\n')
+	while (s[i] && s[i] != '\n')
 		i++;
-	line = malloc((i + 2) * sizeof(char));
-	if (!line)
-		return (NULL);
-	ft_strlcpy(line, str, i + 2);
-	return (line);
+	return (ft_substr(s, 0, i + 1));
 }
 
-char	*ft_getremain(char *str)
+char *ft_readline(int fd, char *str)
 {
-	int		i;
-	char	*remain;
+	int i;
+	char *s;
 
-	i = 0;
-	while (str[i] && str[i] != '\n')
-		i++;
-	if (!str[i])
+	s = malloc((BUFFER_SIZE + 1) * sizeof(char));
+	if (!s)
+		return (NULL);
+	i = 1;
+	while (!ft_checkline(s) && i != 0)
 	{
-		free(str);
-		return (NULL);
-	}
-	remain = malloc((ft_strlen(str) - i + 1) * sizeof(char));
-	if (!remain)
-		return (NULL);
-	i++;
-	ft_strlcpy(remain, str + i, ft_strlen(str) - i + 1);
-	free(str);
-	return (remain);
-}
-
-char	*ft_get(int fd, char *save)
-{
-	char	*buff;
-	int		size;
-
-	buff = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buff)
-		return (NULL);
-	size = 1;
-	while (!ft_ckeckline(save) && size != 0)
-	{
-		size = read(fd, buff, BUFFER_SIZE);
-		if (size == -1)
+		i = read(fd, s, BUFFER_SIZE);
+		if (i == -1)
 		{
-			free(buff);
+			free(s);
 			return (NULL);
 		}
-		buff[size] = '\0';
-		save = ft_strjoin(save, buff);
+		s[i] = '\0';
+		str = ft_strjoin(str, s);
 	}
-	free(buff);
-	return (save);
+	free(s);
+	return (str);
 }
 
-char	*get_next_line(int fd)
+char *ft_getremain(char *s)
 {
-	char		*line;
-	static char	*arr[1024];
+	int		i;
+
+	i = 0;
+	if (!s)
+		return (NULL);
+	while (s[i])
+	{
+		if (s[i] == '\n')
+			return (ft_substr(s, i + 1, ft_strlen(s)));
+		i++;
+	}
+	return (0);
+}
+
+char *get_next_line(int fd)
+{
+	static char *r = 0;
+	char *n;
+	char *a;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
-	arr[fd] = ft_get(fd, arr[fd]);
-	if (!arr[fd])
+	r = ft_readline(fd, r);
+	if (!r)
 		return (NULL);
-	line = ft_getline(arr[fd]);
-	arr[fd] = ft_getremain(arr[fd]);
-	return (line);
+	n = ft_till_line(r);
+	a = r;
+	r = ft_getremain(r);
+	free(a);
+	return (n);
 }
 
-#include <fcntl.h>
-#include <stdio.h>
+// #include <fcntl.h>
+// #include <stdio.h>
 
-int main()
-{
-    int fd1 = open("txxt.txt", 2);
-    int fd2 = open("txt.txt", 2);
-    printf("%s", get_next_line(fd1));
-    printf("%s", get_next_line(fd2));
-    printf("%s", get_next_line(fd1));
-    printf("%s", get_next_line(fd2));
-}
+// int main()
+// {
+// 	int fd1 = open("txxt.txt", O_RDWR);
+// 	printf("%s", get_next_line(fd1));
+// 	printf("%s", get_next_line(fd1));
+// 	printf("%s", get_next_line(fd1));
+// 	printf("%s", get_next_line(fd1));
+// 	printf("%s", get_next_line(fd1));
+// 	printf("%s", get_next_line(fd1));
+// }

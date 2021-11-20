@@ -6,7 +6,7 @@
 /*   By: aaizza <aaizza@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 02:40:03 by aaizza            #+#    #+#             */
-/*   Updated: 2021/11/19 23:05:45 by aaizza           ###   ########.fr       */
+/*   Updated: 2021/11/20 22:46:05 by aaizza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 #include<unistd.h>
 #include<stdlib.h>
 
-size_t	ft_strlen(char *str);
+int     ft_strlen(char *str);
 char	*ft_strjoin(char *s1, char *s2);
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize);
-int	ft_ckeckline(char *s);
+int		ft_checkline(char *s);
+char    *get_next_line(int fd);
+char    *ft_substr(char *s, int start, int len);
 #endif

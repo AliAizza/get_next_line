@@ -6,7 +6,7 @@
 /*   By: aaizza <aaizza@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 02:35:54 by aaizza            #+#    #+#             */
-/*   Updated: 2021/11/21 01:23:53 by aaizza           ###   ########.fr       */
+/*   Updated: 2021/11/21 19:53:06 by aaizza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_strlen(char *str)
 {
 	int	i;
-	
+
 	i = 0;
 	if (!str)
 		return (i);
@@ -26,23 +26,23 @@ int	ft_strlen(char *str)
 
 char	*ft_strjoin(char *s1, char *s2)
 {
-	int				i;
-	int				j;
-	char			*new;
-	int				lens1;
-	int				lens2;
+	char	*new;
+	int		i;
+	int		j;
+	int		a;
+	int		b;
 
-	lens1 = ft_strlen(s1);
-	lens2 = ft_strlen(s2);
-	new = (char *) malloc ((lens1 + lens2 + 1));
+	a = ft_strlen(s1);
+	b = ft_strlen(s2);
+	new = (char *) malloc ((a + b + 1));
 	if (!new)
 		return (NULL);
 	i = 0;
 	j = 0;
-	while (i < lens1)
+	while (i < a)
 		new[i++] = s1[j++];
 	j = 0;
-	while (j < lens2)
+	while (j < b)
 		new[i++] = s2[j++];
 	new[i] = '\0';
 	free (s1);

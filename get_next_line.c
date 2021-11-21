@@ -6,7 +6,7 @@
 /*   By: aaizza <aaizza@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 02:43:19 by aaizza            #+#    #+#             */
-/*   Updated: 2021/11/21 01:07:19 by aaizza           ###   ########.fr       */
+/*   Updated: 2021/11/21 20:36:31 by aaizza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ char	*ft_till_line(char *s)
 
 char	*ft_get_remain(char *s)
 {
-	int	i;
+	int		i;
+	char	*str;
 
 	i = 0;
 	if (!s)
@@ -34,9 +35,14 @@ char	*ft_get_remain(char *s)
 	while (s[i])
 	{
 		if (s[i] == '\n')
-			return (ft_substr(s, i + 1, ft_strlen(s)));
+		{
+			str = ft_substr(s, i + 1, ft_strlen(s));
+			free(s);
+			return (str);
+		}
 		i++;
 	}
+	free(s);
 	return (0);
 }
 
@@ -66,7 +72,6 @@ char	*get_next_line(int fd)
 {
 	char		*new;
 	static char	*rem;
-	char		*l;
 
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
@@ -74,22 +79,6 @@ char	*get_next_line(int fd)
 	if (!rem)
 		return (NULL);
 	new = ft_till_line(rem);
-	l = rem;
 	rem = ft_get_remain(rem);
-	free(l);
 	return (new);
 }
-
-// #include <fcntl.h>
-// #include <stdio.h>
-
-// int main()
-// {
-// 	int fd1 = open("txxt.txt", O_RDWR);
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// }

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aaizza <aaizza@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/19 02:43:19 by aaizza            #+#    #+#             */
-/*   Updated: 2021/11/21 01:07:19 by aaizza           ###   ########.fr       */
+/*   Created: 2021/11/21 04:36:06 by aaizza            #+#    #+#             */
+/*   Updated: 2021/11/21 04:39:11 by aaizza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,31 +65,17 @@ char	*ft_read_line(int fd, char *s)
 char	*get_next_line(int fd)
 {
 	char		*new;
-	static char	*rem;
+	static char	*rem[1024];
 	char		*l;
 
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (NULL);
-	rem = ft_read_line(fd, rem);
-	if (!rem)
+	rem[fd] = ft_read_line(fd, rem[fd]);
+	if (!rem[fd])
 		return (NULL);
-	new = ft_till_line(rem);
-	l = rem;
-	rem = ft_get_remain(rem);
+	new = ft_till_line(rem[fd]);
+	l = rem[fd];
+	rem[fd] = ft_get_remain(rem[fd]);
 	free(l);
 	return (new);
 }
-
-// #include <fcntl.h>
-// #include <stdio.h>
-
-// int main()
-// {
-// 	int fd1 = open("txxt.txt", O_RDWR);
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// 	printf("%s", get_next_line(fd1));
-// }

@@ -6,7 +6,7 @@
 /*   By: aaizza <aaizza@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/21 04:36:06 by aaizza            #+#    #+#             */
-/*   Updated: 2021/11/21 20:36:24 by aaizza           ###   ########.fr       */
+/*   Updated: 2021/11/21 22:41:21 by aaizza           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,11 @@ char	*ft_read_line(int fd, char *s)
 	int		i;
 
 	str = malloc (BUFFER_SIZE + 1);
+	if (!str)
+	{
+		free(s);
+		return (NULL);
+	}
 	i = 1;
 	while (!ft_checkline(s) && i)
 	{
